@@ -3,6 +3,35 @@ Cluster API is a Kubernetes sub-project focused on providing declarative APIs an
 # What is Cluster API
  Started by the Kubernetes Special Interest Group (SIG) Cluster Lifecycle, the Cluster API project uses Kubernetes-style APIs and patterns to automate cluster lifecycle management for platform operators. The supporting infrastructure, like virtual machines, networks, load balancers, and VPCs, as well as the Kubernetes cluster configuration are all defined in the same way that application developers operate deploying and managing their workloads. This enables consistent and repeatable cluster deployments across a wide variety of infrastructure environments.
  
+# Why do we need Cluster API?
+Kubernetes is a complex system that relies on several components being configured correctly to have a working cluster. Recognizing this as a potential stumbling block for users, the community focused on simplifying the bootstrapping process. Today, over [100 Kubernetes distributions](https://www.cncf.io/certification/software-conformance/) and installers have been created, each with different default configurations for clusters and supported infrastructure providers. SIG Cluster Lifecycle saw a need for a single tool to address a set of common overlapping installation concerns and started kubeadm.
+
+Kubeadm was designed as a focused tool for bootstrapping a best-practices Kubernetes cluster. The core tenet behind the kubeadm project was to create a tool that other installers can leverage and ultimately alleviate the amount of configuration that an individual installer needed to maintain. Since it began, kubeadm has become the underlying bootstrapping tool for several other applications, including Kubespray, Minikube, kind, etc.
+
+However, while kubeadm and other bootstrap providers reduce installation complexity, they don’t address how to manage a cluster day-to-day or a Kubernetes environment long term. You are still faced with several questions when setting up a production environment, including:
+
+1. How can I consistently provision machines, load balancers, VPC, etc., across multiple infrastructure providers and locations?
+2. How can I automate cluster lifecycle management, including things like upgrades and cluster deletion?
+3. How can I scale these processes to manage any number of clusters?
+SIG Cluster Lifecycle began the Cluster API project as a way to address these gaps by building declarative, Kubernetes-style APIs, that automate cluster creation, configuration, and management. Using this model, Cluster API can also be extended to support any infrastructure provider (AWS, Azure, vSphere, etc.) or bootstrap provider (kubeadm is default) you need. See the growing list of available providers.
+
+# Goals
+* To manage the lifecycle (create, scale, upgrade, destroy) of Kubernetes-conformant clusters using a declarative API.
+* To work in different environments, both on-premises and in the cloud.
+* To define common operations, provide a default implementation, and provide the ability to swap out implementations for alternative ones.
+* To reuse and integrate existing ecosystem components rather than duplicating their functionality (e.g. node-problem-detector, cluster autoscaler, SIG-Multi-cluster).
+* To provide a transition path for Kubernetes lifecycle products to adopt Cluster API incrementally. Specifically, existing cluster lifecycle management tools should be able to adopt Cluster API in a staged manner, over the course of multiple releases, or even adopting a subset of Cluster API.
+
+# Non-goals
+* To add these APIs to Kubernetes core (kubernetes/kubernetes).
+      * This API should live in a namespace outside the core and follow the best practices defined by api-reviewers, but is not subject to core-api constraints.
+* To manage the lifecycle of infrastructure unrelated to the running of Kubernetes-conformant clusters.
+* To force all Kubernetes lifecycle products (kops, kubespray, GKE, AKS, EKS, IKS etc.) to support or use these APIs.
+* To manage non-Cluster API provisioned Kubernetes-conformant clusters.
+* To manage a single cluster spanning multiple infrastructure providers.
+* To configure a machine at any time other than create or upgrade.
+* To duplicate functionality that exists or is coming to other tooling, e.g., updating kubelet configuration (c.f. dynamic kubelet configuration), or updating apiserver, controller-manager, scheduler configuration (c.f. component-config effort) after the cluster is deployed.
+ 
 # Concepts
 
 ![image](https://user-images.githubusercontent.com/88305831/170925138-b5bf0ea9-a2ad-4896-8c02-854fb5b6ea32.png)
@@ -86,3 +115,12 @@ During the installation process the Kubernetes cluster will be transformed into 
 It is a common practice to create a temporary, local bootstrap cluster which is then used to provision a target management cluster on the selected infrastructure provider.
 
 In this article we will be using minikube configured on our local linux VM/machine which will serve as a management cluster.
+
+## Install clusterctl
+By this step we should have kubectl and minikube/kind cluster setup and ready to use.
+
+The clusterctl CLI tool handles the lifecycle of a Cluster API management cluster.
+clusterctl CLI tool support instllation on Linux and Mac OS.
+We will be using Linux distribution for clusterctl CLI tool.
+
+
