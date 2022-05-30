@@ -280,11 +280,45 @@ To verify the first control plane is up:
  
 After a short while, our nodes should be running and in **Ready** state, let’s check the status using **"kubectl get nodes"**:
  
-* kubectl --kubeconfig=./clusterapi-demo-aws.kubeconfig get nodes
+* "kubectl --kubeconfig=./clusterapi-demo-aws.kubeconfig get nodes"
+ 
+Check the running machine instances on cluster.
+ 
+* "kubectl get machines"
 
 At this point if you check on AWS EC2 dashboard you can see 3 EC2 instances will be running on it.
 
+## Upgrading workload clusters using Cluster API
  
+The high level steps to fully upgrading a cluster are to first upgrade the control plane and then upgrade the worker machines.
+ 
+ To upgrade the Kubernetes control plane version make a modification to the **KubeadmControlPlane** resource’s **Spec.Version** field. 
+ 
+ This will trigger a rolling upgrade of the control plane and, depending on the provider, also upgrade the underlying machine image.
+
+Some infrastructure providers, such as AWS, require that if a specific machine image is specified, it has to match the Kubernetes version specified in the **KubeadmControlPlane** spec. 
+ 
+In order to only trigger a single upgrade, the new **MachineTemplate** should be created first and then both the **Version** and **InfrastructureTemplate** should be modified in a single transaction.
+
+Cluster API will use **rolling update** strategy for this upgrade process.
+ 
+Lets take the backup of the exiting clusters control-plane config.
+ 
+* kubectl get kubeadmcontrolplane clusterapi-demo-aws-control-plane -o yaml > clusterapi-demo-aws-control-plane.out
+ 
+Now the current version of the kubernetes version is v1.21.1, so lets upgrade it to v1.21.2.
+ 
+* kubectl get kubeadmcontrolplane clusterapi-demo-aws-control-plane
+ 
+Now update the **version** field from v1.21.1 to version v1.21.2.
+
+Now ClusterAPI will create a new EC2 instance with control plane version v1.21.2 and once it is ready the older EC2 instance of v1.21.1 will be removed.
+You can use the same steps to downgrade the control plane kubernetes version.
+ 
+Similary if you want to increse the number of Control Planes you can update the **replicas** field and additional control plane instance will be provisioned.
+You can use the same steps to reduce number of control plane machine count.
+ 
+
 
 
 
