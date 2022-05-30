@@ -148,4 +148,14 @@ The command accepts as input a list of providers to install; when executed for t
 **"clusterctl init"** automatically adds to the list the **cluster-api** core provider, and if unspecified, it also adds the **kubeadm bootstrap** and **kubeadm control-plane providers**.
 
 
+## Now at this point we have setup the Cluster API cli too "clusterctl". So lets enable the bash autocompletion feature for it.
 
+* Source the completion script in your ~/.bash_profile file:
+
+    "source <(clusterctl completion bash)"
+
+* Add the completion script to the /usr/local/etc/bash_completion.d directory:
+
+    "clusterctl completion bash >/usr/local/etc/bash_completion.d/clusterctl"
+
+**Note**:- If the directory "/usr/local/etc/bash_completion.d" is not present on server then you can create it.
