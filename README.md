@@ -68,3 +68,21 @@ A CustomResourceDefinition is a built-in resource that lets you extend the Kuber
 
   ## BootstrapData
   BootstrapData contains the Machine or Node role-specific initialization data (usually cloud-init) used by the Infrastructure Provider to bootstrap a Machine into a Node.
+
+## In this article we will see how we can use CLuster API to automate cluster lifecycle management for AWS/Azure/GCP infrastructure providers.
+
+Cluster lifecycle management does installing and managing the cluster lifecycle. It handles deployment, upgrade, migration and deletion of cluster resources.
+
+So let's start with prerequisite for installting Cluster-API
+
+# Common Prerequisites
+1. Install and setup [kubectl](https://kubernetes.io/docs/tasks/tools/) in your local environment.
+2. Install [minikube](https://minikube.sigs.k8s.io/docs/start/) or [kind](https://kind.sigs.k8s.io/docs/user/quick-start/).
+
+## Install and/or configure a Kubernetes cluster
+Cluster API requires an existing Kubernetes cluster accessible via kubectl. 
+During the installation process the Kubernetes cluster will be transformed into a management cluster by installing the Cluster API provider components, so it is recommended to keep it separated from any application workload.
+
+It is a common practice to create a temporary, local bootstrap cluster which is then used to provision a target management cluster on the selected infrastructure provider.
+
+In this article we will be using minikube configured on our local linux VM/machine which will serve as a management cluster.
