@@ -304,11 +304,11 @@ Cluster API will use **rolling update** strategy for this upgrade process.
  
 Lets take the backup of the exiting clusters control-plane config.
  
-* kubectl get kubeadmcontrolplane clusterapi-demo-aws-control-plane -o yaml > clusterapi-demo-aws-control-plane.out
+* "kubectl get kubeadmcontrolplane clusterapi-demo-aws-control-plane -o yaml > clusterapi-demo-aws-control-plane.out"
  
 Now the current version of the kubernetes version is v1.21.1, so lets upgrade it to v1.21.2.
  
-* kubectl get kubeadmcontrolplane clusterapi-demo-aws-control-plane
+* "kubectl edit kubeadmcontrolplane clusterapi-demo-aws-control-plane"
  
 Now update the **version** field from v1.21.1 to version v1.21.2.
 
