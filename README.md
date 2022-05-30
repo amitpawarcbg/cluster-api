@@ -193,5 +193,102 @@ Finally, initialize the management cluster
 * "clusterctl init --infrastructure aws"
 
  ## At this point we have successfully configured AWS as a infrastructure provide for CLusterAPI.
+ ## Let's create our first workload cluster
+ 
+ Once the management cluster is ready, you can create your first workload cluster.
+ 
+ * Preparing the workload cluster configuration
+ 
+ The **"clusterctl generate cluster"** command returns a YAML template for creating a workload cluster.
+ 
+* Which provider will be used for my cluster?
+ 
+The clusterctl generate cluster command uses smart defaults in order to simplify the user experience; for example, if only the aws infrastructure provider is deployed, it detects and uses that when creating the cluster.
+ 
+* What topology will be used for my cluster?
+ 
+ The clusterctl **"generate cluster command"** by default uses cluster templates which are provided by the infrastructure providers. See the provider’s documentation for more information.
+
+See the clusterctl generate cluster [command](https://cluster-api.sigs.k8s.io/clusterctl/commands/generate-cluster.html) documentation for details about how to use alternative sources. for cluster templates.
+ 
+* Required configuration for common providers
+ 
+ Depending on the infrastructure provider you are planning to use, some additional prerequisites should be satisfied before configuring a cluster with Cluster API. Instructions are provided for common providers below.
+
+Otherwise, you can look at the **"clusterctl generate cluster"** [command](https://cluster-api.sigs.k8s.io/clusterctl/commands/generate-cluster.html) documentation for details about how to discover the list of variables required by a cluster templates.
+ 
+* **export AWS_REGION=us-east-1** ## Specify the your AWS region
+ 
+* **export AWS_SSH_KEY_NAME=default** ## If you already have a SSH key name then provide here or else please refer to later section for how to create it.
+ 
+# Select instance types
+ 
+* **export AWS_CONTROL_PLANE_MACHINE_TYPE=t2.medium** ## Select EC2 instance type for your Control plane.
+ 
+* **export AWS_NODE_MACHINE_TYPE=t2.medium** ## Select EC2 instance type for your nodes.
+ 
+See the [AWS provider prerequisites document](https://cluster-api-aws.sigs.k8s.io/topics/using-clusterawsadm-to-fulfill-prerequisites.html) for more details.
+ 
+## Create SSH key pair.
+ 
+* 
+ 
+## Generating the cluster configuration
+ 
+ For the purpose of this tutorial, we’ll name our cluster **clusterapi-demo-aws**.
+ 
+ * "clusterctl generate cluster clusterapi-demo-aws --kubernetes-version v1.21.1 --control-plane-machine-count=1 --worker-machine-count=2 --infrastructure aws > clusterapi-demo-aws.yaml"
+ 
+This creates a YAML file named **clusterapi-demo-aws.yaml** with a predefined list of Cluster API objects; Cluster, Machines, Machine Deployments, etc.
+
+The file can be eventually modified using your editor of choice.
+ 
+## Apply the workload cluster
+ 
+Run the following command to apply the cluster manifest.
+ 
+* "kubectl apply -f clusterapi-demo-aws.yaml"
+
+## Accessing the workload cluster
+ 
+The cluster will now start provisioning. You can check status with:
+ 
+* "kubectl get cluster"
+ 
+You can also get an “at glance” view of the cluster and its resources by running:
+ 
+* "clusterctl describe cluster clusterapi-demo-aws"
+ 
+To verify the first control plane is up:
+ 
+* "kubectl get kubeadmcontrolplane"
+
+**Note**: The control plane won’t be Ready until we install a CNI in the next step.
+ 
+ After the first control plane node is up and running, we can retrieve the workload cluster Kubeconfig:
+ 
+ * "clusterctl get kubeconfig clusterapi-demo-aws > clusterapi-demo-aws.kubeconfig"
+ 
+ ## Deploy a CNI solution
+ 
+ Calico is used here as an example.
+ 
+* "kubectl --kubeconfig=./clusterapi-demo-aws.kubeconfig \
+  apply -f https://docs.projectcalico.org/v3.21/manifests/calico.yaml"
+ 
+ 
+After a short while, our nodes should be running and in **Ready** state, let’s check the status using **"kubectl get nodes"**:
+ 
+* kubectl --kubeconfig=./clusterapi-demo-aws.kubeconfig get nodes
+
+At this point if you check on AWS EC2 dashboard you can see 3 EC2 instances will be running on it.
+
+ 
+
+
+
+ 
+ 
+
  
 
