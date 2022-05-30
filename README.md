@@ -159,3 +159,11 @@ The command accepts as input a list of providers to install; when executed for t
     "clusterctl completion bash >/usr/local/etc/bash_completion.d/clusterctl"
 
 **Note**:- If the directory "/usr/local/etc/bash_completion.d" is not present on server then you can create it.
+
+## In this section we will configure infrastructre provide AWS and later deploy kubernetes cluster on it.
+
+**Initialize AWS provider.
+
+Download the latest binary of **clusterawsadm** from the [AWS provider releases](https://github.com/kubernetes-sigs/cluster-api-provider-aws/releases) and make sure to place it in your path.
+
+The [clusterawsadm](https://cluster-api-aws.sigs.k8s.io/clusterawsadm/clusterawsadm.html) command line utility assists with identity and access management (IAM) for Cluster API Provider AWS.
