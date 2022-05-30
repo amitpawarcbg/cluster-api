@@ -192,4 +192,6 @@ Finally, initialize the management cluster
  
 * "clusterctl init --infrastructure aws"
 
+ ## At this point we have successfully configured AWS as a infrastructure provide for CLusterAPI.
+ 
 
