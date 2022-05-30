@@ -117,10 +117,35 @@ It is a common practice to create a temporary, local bootstrap cluster which is 
 In this article we will be using minikube configured on our local linux VM/machine which will serve as a management cluster.
 
 ## Install clusterctl
-By this step we should have kubectl and minikube/kind cluster setup and ready to use.
+By this step we should have kubectl and minikube/kind k8s cluster setup and ready to use.
 
 The clusterctl CLI tool handles the lifecycle of a Cluster API management cluster.
 clusterctl CLI tool support instllation on Linux and Mac OS.
 We will be using Linux distribution for clusterctl CLI tool.
+
+**Install clusterctl binary with curl on linux**
+
+Download the latest release; on linux, type:
+
+* "curl -L https://github.com/kubernetes-sigs/cluster-api/releases/download/v1.1.3/clusterctl-linux-amd64 -o clusterctl"
+
+Make the clusterctl binary executable.
+
+* "chmod +x ./clusterctl"
+
+Move the binary in to your PATH.
+
+* "sudo mv ./clusterctl /usr/local/bin/clusterctl"
+
+Test to ensure the version you installed is up-to-date:
+
+* "clusterctl version"
+
+## Initialize the management cluster
+Now that we’ve got clusterctl installed and all the prerequisites in place, let’s transform the Kubernetes cluster into a management cluster by using **"clusterctl init"**.
+
+The command accepts as input a list of providers to install; when executed for the first time, 
+**"clusterctl init"** automatically adds to the list the cluster-api core provider, and if unspecified, it also adds the kubeadm bootstrap and kubeadm control-plane providers.
+
 
 
