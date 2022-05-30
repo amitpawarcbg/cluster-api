@@ -302,6 +302,7 @@ In order to only trigger a single upgrade, the new **MachineTemplate** should be
 
 Cluster API will use **rolling update** strategy for this upgrade process.
  
+## Upgrade the Control Plane.
 Lets take the backup of the exiting clusters control-plane config.
  
 * "kubectl get kubeadmcontrolplane clusterapi-demo-aws-control-plane -o yaml > clusterapi-demo-aws-control-plane.out"
@@ -318,6 +319,23 @@ You can use the same steps to downgrade the control plane kubernetes version.
 Similary if you want to increse the number of Control Planes you can update the **replicas** field and additional control plane instance will be provisioned.
 You can use the same steps to reduce number of control plane machine count.
  
+## Upgrade the worker nodes.
+ 
+ Lets take the backup of the exiting clusters node config.
+ 
+* "kubectl get  clusterapi-demo-aws-control-plane -o yaml > clusterapi-demo-aws-control-plane.out"
+ 
+Now the current version of the kubernetes version is v1.21.1, so lets upgrade it to v1.21.2.
+ 
+* "kubectl edit kubeadmcontrolplane clusterapi-demo-aws-control-plane"
+ 
+Now update the **version** field from v1.21.1 to version v1.21.2.
+
+Now ClusterAPI will create a new EC2 instance with control plane version v1.21.2 and once it is ready the older EC2 instance of v1.21.1 will be removed.
+You can use the same steps to downgrade the control plane kubernetes version.
+ 
+Similary if you want to increse the number of Control Planes you can update the **replicas** field and additional control plane instance will be provisioned.
+You can use the same steps to reduce number of control plane machine count.
 
 
 
