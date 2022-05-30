@@ -162,8 +162,34 @@ The command accepts as input a list of providers to install; when executed for t
 
 ## In this section we will configure infrastructre provide AWS and later deploy kubernetes cluster on it.
 
-**Initialize AWS provider.
+**Initialize AWS provider.**
 
 Download the latest binary of **clusterawsadm** from the [AWS provider releases](https://github.com/kubernetes-sigs/cluster-api-provider-aws/releases) and make sure to place it in your path.
 
-The [clusterawsadm](https://cluster-api-aws.sigs.k8s.io/clusterawsadm/clusterawsadm.html) command line utility assists with identity and access management (IAM) for Cluster API Provider AWS.
+The [clusterawsadm](https://cluster-api-aws.sigs.k8s.io/clusterawsadm/clusterawsadm.html) command line utility assists with identity and access management (IAM) for [Cluster API Provider AWS](https://cluster-api-aws.sigs.k8s.io/).
+
+* export AWS_REGION=us-east-1 # This is used to help encode your environment variables
+
+* export AWS_ACCESS_KEY_ID=<your-access-key>
+ 
+* export AWS_SECRET_ACCESS_KEY=<your-secret-access-key>
+ 
+* export AWS_SESSION_TOKEN=<session-token> # If you are using Multi-Factor Auth.
+
+The clusterawsadm utility takes the credentials that you set as environment
+variables and uses them to create a CloudFormation stack in your AWS account
+with the correct IAM resources.
+ 
+* "clusterawsadm bootstrap iam create-cloudformation-stack"
+
+Create the base64 encoded credentials using clusterawsadm.
+This command uses your environment variables and encodes
+them in a value to be stored in a Kubernetes Secret.
+ 
+* "export AWS_B64ENCODED_CREDENTIALS=$(clusterawsadm bootstrap credentials encode-as-profile)"
+
+Finally, initialize the management cluster
+ 
+* "clusterctl init --infrastructure aws"
+
+
