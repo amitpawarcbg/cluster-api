@@ -230,8 +230,9 @@ Otherwise, you can look at the **"clusterctl generate cluster"** [command](https
 See the [AWS provider prerequisites document](https://cluster-api-aws.sigs.k8s.io/topics/using-clusterawsadm-to-fulfill-prerequisites.html) for more details.
  
 ## Create SSH key pair.
+**Prerequisite""- We need aws cli to be configured. Please refer to [AWS cli config](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html) for more details.
  
-* 
+* aws ec2 create-key-pair --key-name default --output json | jq .KeyMaterial -r
  
 ## Generating the cluster configuration
  
