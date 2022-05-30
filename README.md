@@ -145,7 +145,7 @@ Test to ensure the version you installed is up-to-date:
 Now that we’ve got clusterctl installed and all the prerequisites in place, let’s transform the Kubernetes cluster into a management cluster by using **"clusterctl init"**.
 
 The command accepts as input a list of providers to install; when executed for the first time, 
-**"clusterctl init"** automatically adds to the list the cluster-api core provider, and if unspecified, it also adds the kubeadm bootstrap and kubeadm control-plane providers.
+**"clusterctl init"** automatically adds to the list the **cluster-api** core provider, and if unspecified, it also adds the **kubeadm bootstrap** and **kubeadm control-plane providers**.
 
 
 
