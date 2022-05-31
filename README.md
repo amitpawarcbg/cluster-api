@@ -425,7 +425,7 @@ You can use the same steps to reduce number of worker node machine count.
 
 ## Generating the cluster configuration
  
-* "clusterctl generate cluster clusterapi-demo-azure-24 --kubernetes-version v1.20.2 --control-plane-machine-count=1 --worker-machine-count=1 --infrastructure azure > clusterapi-demo-azure-24.yaml"
+* "clusterctl generate cluster clusterapi-demo-azure-24 --kubernetes-version v1.24.1 --control-plane-machine-count=1 --worker-machine-count=1 --infrastructure azure > clusterapi-demo-azure-24.yaml"
 
 ## Apply the workload cluster
 
