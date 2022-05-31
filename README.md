@@ -355,6 +355,11 @@ You can use the same steps to downgrade the worker node kubernetes version.
 Similary if you want to increse the number of worker nodes you can update the **replicas** field and additional control plane instance will be provisioned.
 You can use the same steps to reduce number of worker node machine count.
 
+## Clean Up the cluster
+ 
+ Delete workload cluster.
+ 
+ * "kubectl delete cluster clusterapi-demo-aws"
 
 
 
