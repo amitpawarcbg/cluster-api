@@ -427,6 +427,32 @@ You can use the same steps to reduce number of worker node machine count.
  
 * "clusterctl generate cluster clusterapi-demo-azure-24 --kubernetes-version v1.20.2 --control-plane-machine-count=1 --worker-machine-count=1 --infrastructure azure > clusterapi-demo-azure-24.yaml"
 
+## Apply the workload cluster
+
+ * "kubectl apply -f clusterapi-demo-azure-24.yaml"
+
+##Accessing the workload cluster
+ 
+The cluster will now start provisioning. You can check status with:
+ 
+ * kubectl get cluster
+ 
+You can also get an “at glance” view of the cluster and its resources by running:
+ 
+ * clusterctl describe cluster clusterapi-demo-azure-24
+ 
+To verify the first control plane is up:
+ 
+ * kubectl get kubeadmcontrolplane
+ 
+After the first control plane node is up and running, we can retrieve the workload cluster Kubeconfig:
+ 
+ * clusterctl get kubeconfig clusterapi-demo-azure-24 > clusterapi-demo-azure-24.kubeconfig
+ 
+
+ 
+
+
 
  
  
