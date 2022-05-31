@@ -367,36 +367,38 @@ You can use the same steps to reduce number of worker node machine count.
  
  For more information about authorization, AAD, or requirements for Azure, visit the [Azure provider prerequisites document](https://capz.sigs.k8s.io/topics/getting-started.html#prerequisites).
  
- Once Azure provider prerequisites is complete.
- Follow the below steps to export require environmental variables and initiate the infrastructure provider azure.
+ **Once Azure provider prerequisites is complete.**
+ 
+ **Follow the below steps to export require environmental variables and initiate the infrastructure provider azure.**
  
  export AZURE_SUBSCRIPTION_ID="<SubscriptionId>"
 
-Create an Azure Service Principal and paste the output here
+**Create an Azure Service Principal and paste the output here.**
  
 * export AZURE_TENANT_ID="<Tenant>"
 * export AZURE_CLIENT_ID="<AppId>"
 * export AZURE_CLIENT_SECRET="<Password>"
 
-Base64 encode the variables
+**Base64 encode the variables**
  
 * export AZURE_SUBSCRIPTION_ID_B64="$(echo -n "$AZURE_SUBSCRIPTION_ID" | base64 | tr -d '\n')"
 * export AZURE_TENANT_ID_B64="$(echo -n "$AZURE_TENANT_ID" | base64 | tr -d '\n')"
 * export AZURE_CLIENT_ID_B64="$(echo -n "$AZURE_CLIENT_ID" | base64 | tr -d '\n')"
 * export AZURE_CLIENT_SECRET_B64="$(echo -n "$AZURE_CLIENT_SECRET" | base64 | tr -d '\n')"
 
-Settings needed for AzureClusterIdentity used by the AzureCluster
+**Settings needed for AzureClusterIdentity used by the AzureCluster**
  
 * export AZURE_CLUSTER_IDENTITY_SECRET_NAME="cluster-identity-secret"
 * export CLUSTER_IDENTITY_NAME="cluster-identity"
 * export AZURE_CLUSTER_IDENTITY_SECRET_NAMESPACE="default"
 
-Create a secret to include the password of the Service Principal identity created in Azure
-This secret will be referenced by the AzureClusterIdentity used by the AzureCluster
+**Create a secret to include the password of the Service Principal identity created in Azure**
+ 
+**This secret will be referenced by the AzureClusterIdentity used by the AzureCluster**
  
 * kubectl create secret generic "${AZURE_CLUSTER_IDENTITY_SECRET_NAME}" --from-literal=clientSecret="${AZURE_CLIENT_SECRET}"
 
-Finally, initialize the management cluster
+**Finally, initialize the management cluster**
  
 * clusterctl init --infrastructure azure
  
@@ -408,16 +410,16 @@ Finally, initialize the management cluster
 **Note**: Make sure you choose a VM size which is available in the desired location for your subscription. To see available SKUs, use 
  * "az vm list-skus -l <your_location> -r virtualMachines -o table"
  
-Name of the Azure datacenter location. Change this value to your desired location.
+**Name of the Azure datacenter location. Change this value to your desired location.**
  
 * export AZURE_LOCATION="centralus"
 
-Select VM types.
+**Select VM types.**
  
 * export AZURE_CONTROL_PLANE_MACHINE_TYPE="Standard_D2ads_v5"
 * export AZURE_NODE_MACHINE_TYPE="Standard_D2ads_v5"
 
-# [Optional] Select resource group. The default value is ${CLUSTER_NAME}.
+**[Optional] Select resource group. The default value is ${CLUSTER_NAME}.**
  
 * export AZURE_RESOURCE_GROUP="<ResourceGroupName>"
 
