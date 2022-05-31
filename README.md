@@ -423,6 +423,10 @@ You can use the same steps to reduce number of worker node machine count.
  
 * export AZURE_RESOURCE_GROUP="<ResourceGroupName>"
 
+## Generating the cluster configuration
+ 
+* "clusterctl generate cluster clusterapi-demo-azure-24 --kubernetes-version v1.20.2 --control-plane-machine-count=1 --worker-machine-count=1 --infrastructure azure > clusterapi-demo-azure-24.yaml"
+
 
  
  
