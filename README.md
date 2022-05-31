@@ -287,6 +287,20 @@ Check the running machine instances on cluster.
 * "kubectl get machines"
 
 At this point if you check on AWS EC2 dashboard you can see 3 EC2 instances will be running on it.
+ 
+Now lets tun nginx deployment on the cluster.
+ 
+* "kubectl --kubeconfig=./clusterapi-demo-aws.kubeconfig create deployment nginx --image=nginx"
+* "kubectl --kubeconfig=./clusterapi-demo-aws.kubeconfig get deployments.apps"
+* "kubectl --kubeconfig=./clusterapi-demo-aws.kubeconfig get pods -o wide"
+ 
+Now lets see the nodes status
+ 
+* "kubectl --kubeconfig=./clusterapi-demo-aws.kubeconfig get nodes"
+ 
+Let see the complete resource list and their status for ClusterAPI.
+ 
+* "kubectl get cluster-api"
 
 ## Upgrading workload clusters using Cluster API
  
