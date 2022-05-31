@@ -399,6 +399,27 @@ This secret will be referenced by the AzureClusterIdentity used by the AzureClus
 Finally, initialize the management cluster
  
 * clusterctl init --infrastructure azure
+ 
+# Now at this point we have successfully initiated infrastructure provider Azure.
+# Let's create out first workload cluster
+ 
+* "kubectl get cluster"
+
+**Note**: Make sure you choose a VM size which is available in the desired location for your subscription. To see available SKUs, use 
+ * "az vm list-skus -l <your_location> -r virtualMachines -o table"
+ 
+Name of the Azure datacenter location. Change this value to your desired location.
+ 
+* export AZURE_LOCATION="centralus"
+
+Select VM types.
+ 
+* export AZURE_CONTROL_PLANE_MACHINE_TYPE="Standard_D2ads_v5"
+* export AZURE_NODE_MACHINE_TYPE="Standard_D2ads_v5"
+
+# [Optional] Select resource group. The default value is ${CLUSTER_NAME}.
+ 
+* export AZURE_RESOURCE_GROUP="<ResourceGroupName>"
 
 
  
