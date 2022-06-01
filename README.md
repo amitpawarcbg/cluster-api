@@ -449,6 +449,29 @@ After the first control plane node is up and running, we can retrieve the worklo
  
  * clusterctl get kubeconfig clusterapi-demo-azure-24 > clusterapi-demo-azure-24.kubeconfig
  
+## Deploy a CNI solution
+ 
+ Calico is used here as an example.
+ 
+ Azure does not currently support Calico networking. As a workaround, it is recommended that Azure clusters use the Calico spec below that uses VXLAN.
+ 
+ * "kubectl --kubeconfig=./clusterapi-demo-azure-24.kubeconfig \
+  apply -f https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-azure/main/templates/addons/calico.yaml"
+
+ After a short while, our nodes should be running and in Ready state, let’s check the status using **kubectl get nodes**
+ 
+ * "kubectl --kubeconfig=./clusterapi-demo-azure-24.kubeconfig get nodes"
+ 
+ ## Clean Up the cluster and resources
+ 
+ * "kubectl delete cluster clusterapi-demo-azure-24"
+ 
+ 
+
+ 
+ kubectl --kubeconfig=./capi-quickstart.kubeconfig get nodes
+
+ 
 
  
 
