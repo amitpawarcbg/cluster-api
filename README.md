@@ -469,7 +469,102 @@ After the first control plane node is up and running, we can retrieve the worklo
  
  * "kubectl delete cluster clusterapi-demo-azure-24"
 
+ ## In this section we will configure infrastructre provide GCP and later deploy kubernetes cluster on it.
  
+ **Initialization for GCP Infrastructure providers**
+ 
+Create the base64 encoded credentials by catting your credentials json.
+This command uses your environment variables and encodes
+them in a value to be stored in a Kubernetes Secret.
+ 
+* "export GCP_B64ENCODED_CREDENTIALS=$( cat /path/to/gcp-credentials.json | base64 | tr -d '\n' )"
+ 
+To know how to create service account and key please follow below link.
+ 
+* "https://cloud.google.com/docs/authentication/getting-started#create-service-account-console"
+
+# Finally, initialize the management cluster
+clusterctl init --infrastructure gcp
+ 
+Depending on the infrastructure provider you are planning to use, some additional prerequisites should be satisfied before configuring a cluster with Cluster API. 
+
+Instructions are provided for common providers below.
+
+Otherwise, you can look at the clusterctl generate cluster [command](https://cluster-api.sigs.k8s.io/clusterctl/commands/generate-cluster.html) documentation for details about how to discover the list of variables required by a cluster templates.
+ 
+Name of the GCP datacenter location. Change this value to your desired location
+* export GCP_REGION="<GCP_REGION>"
+* export GCP_PROJECT="<GCP_PROJECT>"
+# Make sure to use same kubernetes version here as building the GCE image
+* export KUBERNETES_VERSION=1.20.2
+* export GCP_CONTROL_PLANE_MACHINE_TYPE=e2-micro
+* export GCP_NODE_MACHINE_TYPE=e2-micro
+* export GCP_NETWORK_NAME=default
+* export CLUSTER_NAME="clusterapi-gcp-demo"
+ 
+See the [GCP provider](https://github.com/kubernetes-sigs/cluster-api-provider-gcp) for more information.
+ 
+ **Generating the cluster configuration**
+ 
+* "clusterctl generate cluster clusterapi-gcp-demo --kubernetes-version v1.20.2 --control-plane-machine-count=1 --worker-machine-count=2 > clusterapi-gcp-demo.yaml"
+ 
+This creates a YAML file named clusterapi-gcp-demo.yaml with a predefined list of Cluster API objects; Cluster, Machines, Machine Deployments, etc.
+
+The file can be eventually modified using your editor of choice.
+ 
+See [clusterctl generate cluster](https://cluster-api.sigs.k8s.io/clusterctl/commands/generate-cluster.html) for more details.
+ 
+ **Apply the workload cluster**
+ 
+ * "kubectl apply -f clusterapi-gcp-demo.yaml"
+ 
+ **Accessing the workload cluster**
+ 
+ The cluster will now start provisioning. You can check status with:
+ 
+ * "kubectl get cluster"
+ 
+ You can also get an “at glance” view of the cluster and its resources by running:
+ 
+ * "clusterctl describe cluster clusterapi-gcp-demo"
+ 
+ To verify the first control plane is up:
+ 
+ * "kubectl get kubeadmcontrolplane"
+ 
+ **Note**: The control plane won’t be Ready until we install a CNI in the next step.
+ 
+ After the first control plane node is up and running, we can retrieve the workload cluster Kubeconfig:
+ 
+ * "clusterctl get kubeconfig clusterapi-gcp-demo > clusterapi-gcp-demo.kubeconfig"
+ 
+ **Deploy a CNI solution**
+ 
+ * "kubectl --kubeconfig=./clusterapi-gcp-demo.kubeconfig apply -f https://docs.projectcalico.org/v3.21/manifests/calico.yaml"
+ 
+ After a short while, our nodes should be running and in **Ready** state, let’s check the status using **"kubectl get nodes"**
+ 
+ * "kubectl --kubeconfig=./clusterapi-gcp-demo.kubeconfig get nodes"
+ 
+ **Clean Up the cluster and resources
+ 
+ Delete workload cluster.
+ 
+ * "kubectl delete cluster clusterapi-gcp-demo"
+ 
+ 
+
+
+
+
+ 
+ 
+
+
+ 
+
+ 
+
 
  
 
