@@ -462,14 +462,14 @@ After the first control plane node is up and running, we can retrieve the worklo
  
  * "kubectl --kubeconfig=./clusterapi-demo-azure-24.kubeconfig get nodes"
  
+ **Note**: To upgrade the Control plane and Worker nodes we can follow the same steps which were mentioned for AWS environment in the above section.
+ Same way you can manage the number of nodes for Control plane and Worker nodes.
+ 
  ## Clean Up the cluster and resources
  
  * "kubectl delete cluster clusterapi-demo-azure-24"
- 
- 
 
  
- kubectl --kubeconfig=./capi-quickstart.kubeconfig get nodes
 
  
 
